@@ -30,18 +30,24 @@ const App: React.FC = () => {
     }
   }
 
+  async function disconnect() {
+    if (!voiceClient) return;
+
+    await voiceClient.disconnect();
+
+    setBotTranscript([]);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="text-red-500 text-bold">{error}</div>
 
-      {state === "idle" && (
-        <button
-          onClick={() => start()}
-          className="mx-auto bg-slate-300 px-5 py-2 rounded-full self-center"
-        >
-          Start
-        </button>
-      )}
+      <button
+        onClick={() => (state === "idle" ? start() : disconnect())}
+        className="mx-auto bg-slate-300 px-5 py-2 rounded-full self-center"
+      >
+        {state === "idle" ? "Start" : "Disconnect"}
+      </button>
 
       <div className="text-center">
         Transport state: <strong>{state}</strong>
